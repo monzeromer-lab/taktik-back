@@ -1,4 +1,10 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+mod database;
+mod guards;
+mod models;
+mod routers;
+mod services;
+mod shared;
 
 
 #[get("/")]
