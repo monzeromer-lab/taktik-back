@@ -12,25 +12,13 @@ async fn hello() -> impl Responder {
     HttpResponse::Ok().body("Hello world!")
 }
 
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    
-    HttpResponse::Ok().body(req_body)
-}
-
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
-}
-
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    println!("Taktik server is running at: http://127.0.0.1:8080");
     HttpServer::new(|| {
-        println!("Rust Http server is running at: http://127.0.0.1:8080");
         App::new()
             .service(hello)
-            .service(echo)
             .service(crate::routers::users_module())
-            .route("/hey", web::get().to(manual_hello))
     })
     .bind(("0.0.0.0", 8080))?
     .run()
