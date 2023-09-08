@@ -4,7 +4,7 @@ mod models;
 mod users;
 mod shared;
 
-use actix_web::{get, App, HttpResponse, HttpServer, Responder};
+use actix_web::{App, HttpServer};
 
 use crate::users::users_module;
 
