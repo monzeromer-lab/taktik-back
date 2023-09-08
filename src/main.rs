@@ -1,12 +1,12 @@
-use actix_web::{get, App, HttpResponse, HttpServer, Responder};
 mod database;
 mod guards;
 mod models;
-mod routers;
-mod services;
+mod users;
 mod shared;
 
-use crate::routers::users_module;
+use actix_web::{get, App, HttpResponse, HttpServer, Responder};
+
+use crate::users::users_module;
 
 #[get("/")]
 async fn hello() -> impl Responder {
