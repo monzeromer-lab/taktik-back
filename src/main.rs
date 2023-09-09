@@ -5,13 +5,15 @@ mod users;
 mod articales;
 mod services;
 mod site;
+mod catalog;
 mod shared;
 
 use actix_web::{App, HttpServer};
 use crate::users::users_module;
 use crate::articales::articales_module;
 use crate::services::services_module;
-use crate::site::site_module;
+use crate::site::sites_module;
+use crate::catalog::catalogs_module;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -23,7 +25,8 @@ async fn main() -> std::io::Result<()> {
             .service(users_module())
             .service(articales_module())
             .service(services_module())
-            .service(site_module())
+            .service(sites_module())
+            .service(catalogs_module())
 
     })
     .bind(("0.0.0.0", 8080))?
