@@ -5,7 +5,6 @@ mod users;
 mod shared;
 
 use actix_web::{App, HttpServer};
-
 use crate::users::users_module;
 
 #[actix_web::main]
