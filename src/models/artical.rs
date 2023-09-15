@@ -2,12 +2,12 @@ use std::time::SystemTime;
 use diesel::prelude::Queryable;
 
 #[derive(Queryable, PartialEq, Debug)]
-pub struct User {
+pub struct Artical {
     id: i32,
-    name: String,
-    email: String,
-    password: String,
+    title: String,
+    desc: String,
     image: String,
+    post_type: String,
     created_at: SystemTime,
     updated_at: SystemTime,
     deleted_at: SystemTime,
