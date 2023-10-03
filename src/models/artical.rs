@@ -1,5 +1,5 @@
-use std::time::SystemTime;
 use diesel::prelude::Queryable;
+use std::time::SystemTime;
 
 #[derive(Queryable, PartialEq, Debug)]
 pub struct Artical {
