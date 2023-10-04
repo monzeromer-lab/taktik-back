@@ -7,6 +7,7 @@ mod services;
 mod site;
 mod catalog;
 mod shared;
+mod db;
 
 use actix_web::{App, HttpServer};
 use crate::users::users_module;
