@@ -1,9 +1,3 @@
-#[macro_use]
-extern crate diesel;
-
-// extern crate dotenv;
-
-mod database;
 mod guards;
 mod models;
 mod users;
@@ -20,10 +14,13 @@ use crate::articales::articales_module;
 use crate::services::services_module;
 use crate::site::sites_module;
 use crate::catalog::catalogs_module;
+use crate::db::create_connection;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     
+    let db = create_connection().await;
+
     println!("Taktik server is running at: http://127.0.0.1:8080");
     HttpServer::new(|| {
 
