@@ -1,35 +1,36 @@
 // @generated automatically by Diesel CLI.
+use diesel::*;
 
-diesel::table! {
+table! {
     artical (id) {
         id -> Integer,
         title -> Text,
         desc -> Text,
         image -> Text,
         post_type -> Text,
-        createdAt -> Timestamp,
-        updatedAt -> Timestamp,
-        deletedAt -> Timestamp,
+        created_at -> Text,
+        updated_at -> Text,
+        deleted_at -> Nullable<Text>,
         status -> Bool,
         creator -> Integer,
     }
 }
 
-diesel::table! {
+table! {
     service (id) {
         id -> Integer,
         title -> Text,
         desc -> Text,
         image -> Text,
-        createdAt -> Timestamp,
-        updatedAt -> Timestamp,
-        deletedAt -> Timestamp,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
+        deleted_at -> Timestamp,
         status -> Bool,
         creator -> Integer,
     }
 }
 
-diesel::table! {
+table! {
     user (id) {
         id -> Integer,
         name -> Text,
@@ -37,18 +38,18 @@ diesel::table! {
         email -> Text,
         password -> Text,
         image -> Text,
-        createdAt -> Timestamp,
-        updatedAt -> Timestamp,
-        deletedAt -> Timestamp,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
+        deleted_at -> Timestamp,
         status -> Bool,
         active -> Bool,
     }
 }
 
-diesel::joinable!(artical -> user (creator));
-diesel::joinable!(service -> user (creator));
+joinable!(artical -> user (creator));
+joinable!(service -> user (creator));
 
-diesel::allow_tables_to_appear_in_same_query!(
+allow_tables_to_appear_in_same_query!(
     artical,
     service,
     user,
