@@ -3,14 +3,12 @@
 use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
-#[sea_orm(table_name = "user")]
+#[sea_orm(table_name = "service")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
-    pub name: String,
-    pub name_ar: String,
-    pub email: String,
-    pub password: String,
+    pub title: String,
+    pub desc: String,
     pub image: String,
     #[sea_orm(column_name = "createdAt")]
     pub created_at: DateTime,
@@ -19,26 +17,24 @@ pub struct Model {
     #[sea_orm(column_name = "deletedAt")]
     pub deleted_at: DateTime,
     pub status: bool,
-    pub active: bool,
+    pub creator: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::artical::Entity")]
-    Artical,
-    #[sea_orm(has_many = "super::service::Entity")]
-    Service,
+    #[sea_orm(
+        belongs_to = "super::user::Entity",
+        from = "Column::Creator",
+        to = "super::user::Column::Id",
+        on_update = "NoAction",
+        on_delete = "NoAction"
+    )]
+    User,
 }
 
-impl Related<super::artical::Entity> for Entity {
+impl Related<super::user::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Artical.def()
-    }
-}
-
-impl Related<super::service::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Service.def()
+        Relation::User.def()
     }
 }
 

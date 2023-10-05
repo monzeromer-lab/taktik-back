@@ -1,26 +1,22 @@
-mod articales;
-mod catalog;
-mod database;
 mod guards;
 mod models;
 mod services;
 mod shared;
-mod site;
-mod users;
+mod db;
 
 use crate::articales::articales_module;
 use crate::catalog::catalogs_module;
 use crate::services::services_module;
 use crate::site::sites_module;
-use crate::users::users_module;
-use actix_files::Files;
-use actix_web::{App, HttpServer};
-
-const PORT: u16 = 3985;
+use crate::catalog::catalogs_module;
+use crate::db::create_connection;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    println!("Taktik server is running at: http://127.0.0.1:3985");
+    
+    let db = create_connection().await;
+
+    println!("Taktik server is running at: http://127.0.0.1:8080");
     HttpServer::new(|| {
         App::new()
             .service(Files::new("/static", ".").show_files_listing())
