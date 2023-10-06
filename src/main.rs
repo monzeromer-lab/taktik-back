@@ -1,14 +1,20 @@
 mod guards;
 mod models;
 mod services;
+mod articales;
+mod site;
+mod catalog;
+mod users;
 mod shared;
 mod db;
 
+use actix_files::Files;
+use actix_web::{App, HttpServer};
 use crate::articales::articales_module;
 use crate::catalog::catalogs_module;
 use crate::services::services_module;
 use crate::site::sites_module;
-use crate::catalog::catalogs_module;
+use crate::users::users_module;
 use crate::db::create_connection;
 
 #[actix_web::main]
@@ -26,7 +32,7 @@ async fn main() -> std::io::Result<()> {
             .service(sites_module())
             .service(catalogs_module())
     })
-    .bind(("0.0.0.0", PORT))?
+    .bind(("0.0.0.0", 8080))?
     .run()
     .await
 }
