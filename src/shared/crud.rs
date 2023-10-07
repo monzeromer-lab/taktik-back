@@ -1,8 +1,7 @@
-use sea_orm::{*, sea_query::IntoCondition};
+use sea_orm::{sea_query::IntoCondition, *};
 use std::convert::TryInto;
 
 pub struct CRUD;
-
 
 // Define the newtype wrapper for the primary key
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -23,9 +22,7 @@ impl std::convert::TryInto<usize> for MyPrimaryKey {
     }
 }
 
-
 impl CRUD {
-
     pub async fn create<Connection, Model, Data>(
         data: Data,
         connection: Option<&Connection>,
@@ -36,12 +33,15 @@ impl CRUD {
         Data: sea_orm::ActiveModelTrait + IntoActiveModel<Model>,
     {
         let connection: &Connection = connection.ok_or("Connection not provided")?;
-    
-        let inserted_model: InsertResult<Model> = Model::Entity::insert(data.into_active_model()).exec(connection).await.unwrap();
-    
+
+        let inserted_model: InsertResult<Model> = Model::Entity::insert(data.into_active_model())
+            .exec(connection)
+            .await
+            .unwrap();
+
         Ok(inserted_model)
     }
-    
+
     pub async fn read<Connection, Model, Data>(
         data: Option<Data>,
         connection: Option<&Connection>,
@@ -55,7 +55,7 @@ impl CRUD {
             Some(filter) => Model::find().filter(filter),
             None => Model::find(),
         };
-    
+
         query.all(connection.unwrap()).await
     }
 
@@ -63,27 +63,59 @@ impl CRUD {
     //     update_at: UpdateWhere,
     //     data: Data,
     //     connection: Option<&Connection>,
-    // ) -> Result<Model, Box<dyn std::error::Error>>
+    //     model_id: MyPrimaryKey,
+    // ) -> Result<UpdateResult, Box<dyn std::error::Error>>
     // where
     //     Connection: sea_orm::ConnectionTrait,
-    //     Model: EntityTrait,
+    //     Model: EntityTrait + sea_orm::ActiveModelTrait,
     //     UpdateWhere: IntoCondition,
-    //     Data: serde::de::DeserializeOwned,
+    //     Data: IntoActiveModel<Model> + sea_orm::ActiveModelTrait,
+    //     <<Model as sea_orm::EntityTrait>::PrimaryKey as sea_orm::PrimaryKeyTrait>::ValueType:
+    //         std::convert::From<MyPrimaryKey>,
     // {
-
-    //     let mut model = Model::find().filter(update_at).one(connection.unwrap()).await?;
-
-    //     // Update the model fields with the new data
-    //     model.insert(data);
-
-    //     let connection = connection.unwrap();
-
-    //     // Save the updated model
-    //     let updated_model = model.save_changes(connection).await?;
-
-    //     Ok(updated_model)
-    // }
+    //     let old_doc = Model::find_by_id(model_id).one(connection.unwrap()).await?;
     
+    //     let new_data = data;
+    
+    //     let new_doc = Model::update_many()
+    //         .set(new_data)
+    //         .filter(update_at)
+    //         .exec(connection.unwrap())
+    //         .await?;
+    
+    //     Ok(new_doc)
+    // }
+
+    pub async fn update<Connection, Model, UpdateWhere, Data>(
+        update_at: UpdateWhere,
+        data: Data,
+        connection: Option<&Connection>,
+        model_id: MyPrimaryKey,
+    ) -> Result<UpdateResult, Box<dyn std::error::Error>>
+    where
+        Connection: sea_orm::ConnectionTrait,
+        Model: EntityTrait + sea_orm::ActiveModelTrait,
+        UpdateWhere: IntoCondition,
+        Data: sea_orm::ActiveModelTrait,
+        <<Model as sea_orm::EntityTrait>::PrimaryKey as sea_orm::PrimaryKeyTrait>::ValueType: std::convert::From<MyPrimaryKey>,
+    {
+        let connection = connection.unwrap();
+    
+        let old_doc = Model::find_by_id(model_id.into()).one(connection).await?;
+    
+        let new_data = data.into_active_model();
+    
+        let new_doc = Model::update_many()
+            .set(new_data)
+            .filter(update_at)
+            .exec(connection)
+            .await?;
+    
+        Ok(new_doc)
+    }
+    
+    
+
     pub async fn delete<Connection, Model>(
         model: Model,
         connection: Option<&Connection>,
@@ -92,23 +124,21 @@ impl CRUD {
     where
         Connection: sea_orm::ConnectionTrait,
         Model: EntityTrait + sea_orm::ActiveModelTrait,
-        <<Model as sea_orm::EntityTrait>::PrimaryKey as sea_orm::PrimaryKeyTrait>::ValueType: std::convert::From<MyPrimaryKey>,
+        <<Model as sea_orm::EntityTrait>::PrimaryKey as sea_orm::PrimaryKeyTrait>::ValueType:
+            std::convert::From<MyPrimaryKey>,
     {
         let connection: &Connection = connection.unwrap();
-    
+
         // Use a pattern guard to handle the outcome of the `find_by_id()` function.
         match Model::find_by_id(data.clone()).one(connection).await? {
             orange if orange.is_some() => {
                 // Delete the `Model` instance by calling the `delete_by_id()` function.
                 let res: DeleteResult = Model::delete_by_id(data).exec(connection).await?;
-    
+
                 // Return the number of rows that were affected by the delete operation.
                 Ok(res.rows_affected.try_into().unwrap())
             }
             _ => Err(DbErr::RecordNotFound("id".to_owned())),
         }
     }
-    
-    
-    
 }
