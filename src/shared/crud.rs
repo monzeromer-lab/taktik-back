@@ -59,33 +59,6 @@ impl CRUD {
         query.all(connection.unwrap()).await
     }
 
-    // pub async fn update<Connection, Model, UpdateWhere, Data>(
-    //     update_at: UpdateWhere,
-    //     data: Data,
-    //     connection: Option<&Connection>,
-    //     model_id: MyPrimaryKey,
-    // ) -> Result<UpdateResult, Box<dyn std::error::Error>>
-    // where
-    //     Connection: sea_orm::ConnectionTrait,
-    //     Model: EntityTrait + sea_orm::ActiveModelTrait,
-    //     UpdateWhere: IntoCondition,
-    //     Data: IntoActiveModel<Model> + sea_orm::ActiveModelTrait,
-    //     <<Model as sea_orm::EntityTrait>::PrimaryKey as sea_orm::PrimaryKeyTrait>::ValueType:
-    //         std::convert::From<MyPrimaryKey>,
-    // {
-    //     let old_doc = Model::find_by_id(model_id).one(connection.unwrap()).await?;
-    
-    //     let new_data = data;
-    
-    //     let new_doc = Model::update_many()
-    //         .set(new_data)
-    //         .filter(update_at)
-    //         .exec(connection.unwrap())
-    //         .await?;
-    
-    //     Ok(new_doc)
-    // }
-
     pub async fn update<Connection, Model, UpdateWhere, Data>(
         update_at: UpdateWhere,
         data: Data,
@@ -96,12 +69,11 @@ impl CRUD {
         Connection: sea_orm::ConnectionTrait,
         Model: EntityTrait + sea_orm::ActiveModelTrait,
         UpdateWhere: IntoCondition,
-        Data: sea_orm::ActiveModelTrait,
-        <<Model as sea_orm::EntityTrait>::PrimaryKey as sea_orm::PrimaryKeyTrait>::ValueType: std::convert::From<MyPrimaryKey>,
+        Data: sea_orm::ActiveModelTrait<Entity = Model>,
+        <<Model as sea_orm::EntityTrait>::PrimaryKey as sea_orm::PrimaryKeyTrait>::ValueType:
+            std::convert::From<MyPrimaryKey>,
     {
         let connection = connection.unwrap();
-    
-        let old_doc = Model::find_by_id(model_id.into()).one(connection).await?;
     
         let new_data = data.into_active_model();
     
@@ -114,10 +86,8 @@ impl CRUD {
         Ok(new_doc)
     }
     
-    
 
     pub async fn delete<Connection, Model>(
-        model: Model,
         connection: Option<&Connection>,
         data: MyPrimaryKey,
     ) -> Result<usize, DbErr>
