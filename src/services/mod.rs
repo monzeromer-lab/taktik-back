@@ -1,21 +1,14 @@
 mod controller;
-mod service;
 mod dto;
+mod service;
 
 use actix_web::{dev::HttpServiceFactory, services, web};
-use controller::{
-    get_service,
-    get,
-    create,
-};
-
-
+use controller::{create, get, get_service};
 
 pub fn services_module() -> impl HttpServiceFactory {
-    let services = services![
-        
-        web::resource("/service").to(|| get_service()),
-        web::resource("/services").to(|| get()),
-    ];
+    let services = services![web::scope("/service")
+        .route("/", web::get().to(get_service))
+        .route("/services", web::get().to(get))
+        .route("/new", web::post().to(create))];
     services
 }
