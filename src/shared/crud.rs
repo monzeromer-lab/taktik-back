@@ -29,13 +29,13 @@ impl CRUD {
     ) -> Result<InsertResult<Model>, Box<dyn std::error::Error>>
     where
         Connection: sea_orm::ConnectionTrait,
-        Model: EntityTrait + sea_orm::ActiveModelTrait,
-        Data: sea_orm::ActiveModelTrait + IntoActiveModel<Model>,
+        Model: ModelTrait + sea_orm::ActiveModelTrait,
+        Data: sea_orm::ActiveModelTrait + sea_orm::ActiveModelTrait,
     {
         let connection: &Connection = connection.ok_or("Connection not provided")?;
-
-        let inserted_model: InsertResult<Model> = Model::Entity::insert(data.into_active_model())
-            .exec(connection)
+        
+        let inserted_model: InsertResult<Data> = Model::insert(data.into_active_model(), connection)
+            // .exec(connection)
             .await
             .unwrap();
 

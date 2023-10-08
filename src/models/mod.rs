@@ -3,6 +3,5 @@
 pub mod prelude;
 
 pub mod artical;
-pub mod posts;
 pub mod service;
 pub mod user;
