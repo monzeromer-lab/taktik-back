@@ -15,13 +15,10 @@ use crate::catalog::catalogs_module;
 use crate::services::services_module;
 use crate::site::sites_module;
 use crate::users::users_module;
-use crate::db::create_connection;
 use actix_multipart::form::tempfile::TempFileConfig;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    
-    let db = create_connection().await;
 
     std::fs::create_dir_all("./tmp")?;
     println!("Taktik server is running at: http://127.0.0.1:8080");
