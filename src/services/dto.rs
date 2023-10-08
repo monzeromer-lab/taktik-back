@@ -22,10 +22,16 @@ pub struct UploadForm {
     pub status: bool,
 
     #[validate(range(min = 1))]
-    pub creator: u64,
+    pub creator: i32,
 }
 
 #[derive(Debug, Serialize)]
 pub struct NewServiceResult{
     pub id: i32
+}
+
+#[derive(Debug, Deserialize, Validate)]
+pub struct GetOneService {
+    #[validate(range(min = 1))]
+    pub id: i32,
 }

@@ -1,10 +1,10 @@
 use super::service::*;
 use actix_web::{ HttpResponse, Responder, web};
-use crate::services::dto::UploadForm;
+use crate::services::dto::*;
 
-pub async fn get_service() -> impl Responder {
-    println!("services route");
-    HttpResponse::Ok().body("services!")
+pub async fn get_service(path: web::Path<GetOneService>) -> impl Responder {
+    let my_service = get_one_service(path.id).await;
+    HttpResponse::Ok().json(my_service)
 }
 
 pub async fn get() -> impl Responder {

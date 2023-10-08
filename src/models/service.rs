@@ -4,7 +4,7 @@ use serde::Serialize;
 use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq, Serialize)]
-#[sea_orm(table_name = "service")]
+#[sea_orm(table_name = "services")]
 pub struct Model {
     #[sea_orm(primary_key)]
     id: i32,
@@ -31,7 +31,7 @@ pub struct Model {
     pub deleted_at: Option<String>,
     pub status: bool,
     #[sea_orm(nullable)]
-    pub creator: Option<u64>,
+    pub creator: Option<i32>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation, Serialize)]
