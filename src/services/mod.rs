@@ -10,7 +10,7 @@ pub fn services_module() -> impl HttpServiceFactory {
         web::scope("/service")
             .route("/", web::get().to(get))
             .route("/new", web::post().to(create)),
-        web::resource("/find/:id").route(web::get().to(get_service))
+        web::resource("/find/{id}").route(web::get().to(get_service))
     ];
     services
 }

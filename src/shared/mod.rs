@@ -1,16 +1,18 @@
 use serde::Serialize;
+use actix_web::http::StatusCode;
 
 #[derive(Debug, Serialize)]
 pub struct TakTikResponse<Data> {
     pub error: bool,
 
-    pub status: i32,
+    #[serde(with = "http_serde::status_code")]
+    pub status: StatusCode,
 
-    pub data: ResResult<Data>,
+    pub result: ResResult<Data>,
 }
 
 #[derive(Debug, Serialize)]
 pub enum ResResult<MODEL> {
-    DATA(MODEL),
-    ERROR(String),
+    Data(MODEL),
+    Error(String),
 }
