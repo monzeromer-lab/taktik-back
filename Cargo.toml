@@ -25,3 +25,4 @@ openssl-sys = "0.9.93"
 validator = { version = "0.16.1", features = ["derive"] }
 futures-util = "0.3.28"
 http-serde = "1.1.3"
+oauth2 = "4.4.2"
