@@ -23,7 +23,7 @@ pub async fn get_services_service() -> TakTikResponse<Vec<models::service::Model
          TakTikResponse {
             error: true,
             status:  StatusCode::INTERNAL_SERVER_ERROR,
-            result: ResResult::Error("Something went wrong".to_string()),
+            result: ResResult::Error(ResError::Error("Something went wrong".to_string())),
         }
     },
     }
@@ -37,7 +37,7 @@ pub async fn get_one_service(req_data: i32) -> TakTikResponse<models::service::M
                 None => TakTikResponse {
                     error: true,
                     status: StatusCode::NOT_FOUND,
-                    result: ResResult::Error("Service Not Found".to_string()),
+                    result: ResResult::Error(ResError::Error("Something went wrong".to_string())),
                 },
                 Some(..) => TakTikResponse {
                     error: false,
@@ -52,7 +52,7 @@ pub async fn get_one_service(req_data: i32) -> TakTikResponse<models::service::M
             TakTikResponse {
             error: true,
             status: StatusCode::INTERNAL_SERVER_ERROR,
-            result: ResResult::Error("Something went wrong".to_string()),
+            result: ResResult::Error(ResError::Error("Something went wrong".to_string())),
         }
     },
     }
@@ -88,7 +88,7 @@ pub async fn create_service(data: UploadForm) -> TakTikResponse<NewServiceResult
             TakTikResponse {
             error: true,
             status: StatusCode::INTERNAL_SERVER_ERROR,
-            result: ResResult::Error("Something went wrong".to_string()),
+            result: ResResult::Error(ResError::Error("Something went wrong".to_string())),
         }
     },
     }

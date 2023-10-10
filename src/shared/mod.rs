@@ -1,5 +1,6 @@
 use serde::Serialize;
 use actix_web::http::StatusCode;
+use validator::ValidationErrors;
 
 #[derive(Debug, Serialize)]
 pub struct TakTikResponse<Data> {
@@ -12,7 +13,13 @@ pub struct TakTikResponse<Data> {
 }
 
 #[derive(Debug, Serialize)]
+pub enum ResError {
+    Error(String),
+    ValidationErrors(ValidationErrors)
+}
+
+#[derive(Debug, Serialize)]
 pub enum ResResult<MODEL> {
     Data(MODEL),
-    Error(String),
+    Error(ResError),
 }
