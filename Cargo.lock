@@ -499,6 +499,7 @@ dependencies = [
  "jsonwebtoken",
  "oauth2",
  "openssl-sys",
+ "password-hash",
  "sea-orm",
  "serde",
  "serde_json",
@@ -1889,6 +1890,17 @@ name = "parse-size"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "944553dd59c802559559161f9816429058b869003836120e262e8caec061b7ae"
+
+[[package]]
+name = "password-hash"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "346f04948ba92c43e8469c1ee6736c7563d71012b17d40745260fe106aac2166"
+dependencies = [
+ "base64ct",
+ "rand_core",
+ "subtle",
+]
 
 [[package]]
 name = "paste"

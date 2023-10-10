@@ -22,9 +22,9 @@ pub async fn register_user(data: RegisterUserForm) -> TakTikResponse<models::use
             None => {
                 let now = Utc::now();
                 let new_user = models::user::ActiveModel {
-                    name: Set(data.name.unwrap()),
-                    email: Set(data.email.unwrap()),
-                    password: Set(data.password.unwrap()),
+                    name: Set(data.name.clone().unwrap()),
+                    email: Set(data.email.clone().unwrap()),
+                    password: Set(data.hash_password()),
                     created_at: Set(now.to_string()),
                     updated_at: Set(now.to_string()),
                     id: NotSet,
