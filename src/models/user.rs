@@ -10,22 +10,19 @@ pub struct Model {
     pub id: i32,
     pub name: String,
     #[sea_orm(nullable)]
-    pub name_ar: String,
+    pub name_ar: Option<String>,
     pub email: String,
     pub password: String,
     #[sea_orm(nullable)]
-    pub image: String,
-    #[sea_orm(column_name = "createdAt")]
+    pub image: Option<String>,
     pub created_at: String,
-    #[sea_orm(column_name = "updatedAt")]
     pub updated_at: String,
-
-    #[sea_orm(column_name = "deletedAt", nullable)]
-    pub deleted_at: String,
     #[sea_orm(nullable)]
-    pub status: bool,
+    pub deleted_at: Option<String>,
     #[sea_orm(nullable)]
-    pub active: bool,
+    pub status: Option<bool>,
+    #[sea_orm(nullable)]
+    pub active: Option<bool>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

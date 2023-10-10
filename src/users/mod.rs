@@ -7,7 +7,7 @@ use controller::register_new_user;
 
 pub fn users_module() -> impl HttpServiceFactory {
     let services = services![
-        web::resource("/signup").route(web::get().to(register_new_user))
+        web::resource("/signup").route(web::post().to(register_new_user))
     ];
     services
 }

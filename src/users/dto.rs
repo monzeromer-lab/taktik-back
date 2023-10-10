@@ -9,6 +9,6 @@ pub struct RegisterUserForm {
     #[validate(email, required)]
     pub email: Option<String>,
 
-    #[validate(length(min = 1))]
+    #[validate(length(min = 1), required)]
     pub password: Option<String>,
 }
