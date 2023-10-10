@@ -14,7 +14,7 @@ use sea_orm::ActiveModelTrait;
 pub async fn register_user(data: RegisterUserForm) -> TakTikResponse<models::user::Model> {
     let db_conn = create_connection().await.unwrap();
     match User::find()
-        .filter(user::Column::Email.eq(&data.email))
+        .filter(user::Column::Email.eq(&data.email.clone().unwrap()))
         .one(&db_conn)
         .await
     {
@@ -22,9 +22,9 @@ pub async fn register_user(data: RegisterUserForm) -> TakTikResponse<models::use
             None => {
                 let now = Utc::now();
                 let new_user = models::user::ActiveModel {
-                    name: Set(data.name),
-                    email: Set(data.email),
-                    password: Set(data.password),
+                    name: Set(data.name.unwrap()),
+                    email: Set(data.email.unwrap()),
+                    password: Set(data.password.unwrap()),
                     created_at: Set(now.to_string()),
                     updated_at: Set(now.to_string()),
                     id: NotSet,
