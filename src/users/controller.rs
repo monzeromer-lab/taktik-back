@@ -5,17 +5,6 @@ use super::service::register_user;
 use actix_web::HttpResponseBuilder;
 use validator::Validate;
 
-pub async fn get_user() -> impl Responder {
-    println!("users route");
-    HttpResponse::Ok().body("users")
-}
-
-pub async fn hello_world() -> impl Responder {
-    println!("hello world route");
-    HttpResponse::Ok().body("Hello, World!")
-}
-
-#[allow(unused)]
 pub async fn register_new_user(form: web::Json<RegisterUserForm>) -> impl Responder {
     match form.validate() {
         Ok(_result) => {

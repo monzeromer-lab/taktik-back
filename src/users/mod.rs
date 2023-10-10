@@ -3,12 +3,11 @@ mod dto;
 mod service;
 
 use actix_web::{dev::HttpServiceFactory, services, web};
-use controller::{get_user, hello_world};
+use controller::register_new_user;
 
 pub fn users_module() -> impl HttpServiceFactory {
     let services = services![
-        web::resource("/test").to(|| get_user()),
-        web::scope("/hi").route("/", web::get().to(|| hello_world()))
+        web::resource("/signup").route(web::post().to(register_new_user))
     ];
     services
 }
