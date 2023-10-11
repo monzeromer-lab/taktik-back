@@ -20,7 +20,9 @@ use actix_multipart::form::tempfile::TempFileConfig;
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
 
+    println!("Creating Dir tmp if it doesn't exists.");
     std::fs::create_dir_all("./tmp")?;
+    println!("Created.");
     println!("Taktik server is running at: http://127.0.0.1:8080");
     HttpServer::new(|| {
         App::new()
